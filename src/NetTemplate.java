@@ -24,8 +24,8 @@ public class NetTemplate extends NeuralNetwork { // Basic NeuralNet
         }
 
         @Override
-        public double setWeight(double weight) {
-            return this.weight = weight;
+        public void setWeight(double weight) {
+            this.weight = weight;
         }
 
         @Override
@@ -64,8 +64,8 @@ public class NetTemplate extends NeuralNetwork { // Basic NeuralNet
         }
 
         @Override
-        public double setWeight(double weight) {
-            return this.weight = weight;
+        public void setWeight(double weight) {
+            this.weight = weight;
         }
 
         @Override
