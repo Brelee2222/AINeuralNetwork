@@ -16,27 +16,27 @@ public class CatlystNeuralNet extends NeuralNetwork {
     public final double randWeight;
 
     public CatlystNeuralNet(int inputs, int results, int layers, int layerSize, double randWeight, double learningRate) {
+        this.randWeight = randWeight;
+        this.learningRate = learningRate;
         init(
                 this.inputs = inputs,
                 this.results = results,
                 this.layers = layers,
-                this.layerSize = layerSize,
-                this.randWeight = randWeight,
-                this.learningRate = learningRate
+                this.layerSize = layerSize
         );
     }
     public CatlystNeuralNet(int inputs, int results, int layers, int layerSize) {
+        this.randWeight = 0.05;
+        this.learningRate = 1;
         init(
                 this.inputs = inputs,
                 this.results = results,
                 this.layers = layers,
-                this.layerSize = layerSize,
-                this.randWeight = 0.05,
-                this.learningRate = 1
+                this.layerSize = layerSize
         );
     }
 
-    private void init(int inputs, int results, int layers, int layerSize, double randWeight, double learningRate) {
+    private void init(int inputs, int results, int layers, int layerSize) {
         values = new double[inputs];
         neuronLayers = new Neuron[layers][];
         Neuron[] prevLayer = neuronLayers[layers-1] = new Neuron[layerSize];
