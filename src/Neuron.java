@@ -22,11 +22,10 @@ public abstract class Neuron {
     }
     public double get() {
         int period = getPeriod();
-        if(currentPeriod != period) {
-            currentPeriod = period;
-            return result = getValue();
-        }
-        return result;
+        if(currentPeriod == period)
+            return result;
+        currentPeriod = period;
+        return result = getValue();
     }
     public double getErrSignal() {
         return errSignal * result * (1 - result);

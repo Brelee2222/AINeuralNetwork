@@ -5,10 +5,10 @@ public class NeuralNetwork {
     public int period;
 
     public void set(double[] values) {
-        period++;
         this.values = values;
     }
     public double[] get() {
+        period++;
         Neuron[] terminalNeurons = neuronLayers[0];
         double[] values = new double[terminalNeurons.length];
         for(int i = 0; i != values.length; i++)
@@ -28,8 +28,8 @@ public class NeuralNetwork {
         for(Neuron[] neurons : neuronLayers) for(Neuron neuron : neurons) {
             double errSignal = neuron.getErrSignal();
             for (NeuronInput input : neuron.inputs) {
-                double weight = input.getWeight();
                 Neuron from = input.getFrom();
+                double weight = input.getWeight();
                 if(from != null)
                     from.addErrSignal(errSignal * weight);
                 input.setWeight(weight + errSignal * input.getInput() * learningRate);
