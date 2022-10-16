@@ -24,6 +24,7 @@ public abstract class Neuron {
         int period = getPeriod();
         if(currentPeriod == period)
             return result;
+        errSignal = 0;
         currentPeriod = period;
         return result = getValue();
     }

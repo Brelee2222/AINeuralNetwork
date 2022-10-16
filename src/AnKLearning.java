@@ -1,6 +1,6 @@
 public class AnKLearning extends Learning {
     public AnKLearning(String trainingPath, String testingPath) {
-        super(new CatlystNeuralNet(64, 10, 2, 64, 0.1, 0.05), 1797, 3823, 64, 1, trainingPath, testingPath);
+        super(new CatlystNeuralNet(64, 10, 3, 43, 0.1, 0.05), 1797, 3823, 64, 1, trainingPath, testingPath);
         for(Case currentCase : trainingCases) {
             for(int i = 0; i != currentCase.answers.length; i++) {
                 int categ = (int) currentCase.answers[0];
