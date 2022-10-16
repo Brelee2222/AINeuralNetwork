@@ -69,7 +69,7 @@ public class CatlystNeuralNet extends NeuralNetwork {
     }
 
     public double getRandWeight() {
-        return (Math.random()-0.5) * randWeight;
+        return (Math.random()-0.5) * randWeight * 2;
     }
 
     public class Bias implements NeuronInput {
