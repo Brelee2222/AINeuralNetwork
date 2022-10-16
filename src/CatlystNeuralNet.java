@@ -46,7 +46,7 @@ public class CatlystNeuralNet extends NeuralNetwork {
             neuronInputs[inputs] = new Bias();
             for(int j = 0; j != inputs; j++)
                 neuronInputs[j] = new SensorInput(j);
-            prevLayer[i] = new Neuron(neuronInputs);
+            prevLayer[i] = new NetNeuron(neuronInputs);
         }
         for(int i = layers-2; i != 0; i--) {
             Neuron[] neuronLayer = neuronLayers[i] = new Neuron[layerSize];
@@ -55,7 +55,7 @@ public class CatlystNeuralNet extends NeuralNetwork {
                 neuronInputs[layerSize] = new Bias();
                 for(int l = 0; l != layerSize; l++)
                     neuronInputs[l] = new Input(prevLayer[l]);
-                neuronLayer[j] = new Neuron(neuronInputs);
+                neuronLayer[j] = new NetNeuron(neuronInputs);
             }
             prevLayer = neuronLayer;
         }
@@ -64,7 +64,7 @@ public class CatlystNeuralNet extends NeuralNetwork {
             neuronInputs[layerSize] = new Bias();
             for(int j = 0; j != layerSize; j++)
                 neuronInputs[j] = new Input(prevLayer[j]);
-            terminalLayer[i] = new Neuron(neuronInputs);
+            terminalLayer[i] = new NetNeuron(neuronInputs);
         }
     }
 
@@ -164,6 +164,17 @@ public class CatlystNeuralNet extends NeuralNetwork {
         @Override
         public Neuron getFrom() {
             return source;
+        }
+    }
+    public class NetNeuron extends Neuron {
+
+        public NetNeuron(NeuronInput... inputs) {
+            super(inputs);
+        }
+
+        @Override
+        public int getPeriod() {
+            return period;
         }
     }
 }

@@ -1,7 +1,8 @@
-public class Neuron {
-    public NeuronInput[] inputs; // Allows the ability to make stupidly complex networks. Improves efficiency
+public abstract class Neuron {
+    public NeuronInput[] inputs;
     private double errSignal;
-    private double result = Double.NaN;
+    private double result;
+    private int currentPeriod = 0;
 
     public Neuron(NeuronInput... inputs) {
         this.inputs = inputs;
@@ -20,11 +21,12 @@ public class Neuron {
         return output(compute());
     }
     public double get() {
-        return Double.isNaN(result) ? result = getValue() : result;
-    }
-    public void reset() { // resets the values so they don't get reprocessed
-        errSignal = 0;
-        result = Double.NaN;
+        int period = getPeriod();
+        if(currentPeriod != period) {
+            currentPeriod = period;
+            return result = getValue();
+        }
+        return result;
     }
     public double getErrSignal() {
         return errSignal * result * (1 - result);
@@ -35,4 +37,5 @@ public class Neuron {
     public void setErrSignal(double signal) {
         errSignal = signal;
     }
+    public abstract int getPeriod();
 }

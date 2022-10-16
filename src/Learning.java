@@ -8,7 +8,7 @@ public abstract class Learning {
     public final int answers;
     public Case[] testCases;
     public Case[] trainingCases;
-    public double accThresh = 1;
+    public double accThresh = 0.99973;
     public double maxEpoch = -1;
 
     public Learning(NeuralNetwork network, int tests, int trainings, int inputs, int answers, String trainingPath, String testingPath) { // training data path and testing data path
@@ -62,13 +62,9 @@ public abstract class Learning {
     }
     public void test() {
         double accuracy = 0.0;
-        int epoch = 0;
-        while(accuracy < accThresh && maxEpoch != epoch) {
-            accuracy = 0.0;
-            for(Case currentCase : testCases)
-                accuracy += getAccuracy(network.get(currentCase.inputs), currentCase.answers)/testCases.length;
-            System.out.println("accuracy: " + (accuracy /= trainingCases.length) + "   epoch: " + ++epoch);
-        }
+        for(Case currentCase : testCases)
+            accuracy += getAccuracy(network.get(currentCase.inputs), currentCase.answers);
+        System.out.println("accuracy: " + (accuracy / testCases.length));
     }
 
     public abstract double getAccuracy(double[] results, double[] answers);
