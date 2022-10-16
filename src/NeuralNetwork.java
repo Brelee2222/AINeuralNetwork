@@ -32,7 +32,7 @@ public class NeuralNetwork {
                 double weight = input.getWeight();
                 if(from != null)
                     from.addErrSignal(errSignal * weight);
-                input.setWeight(weight + errSignal * input.getInput() * learningRate);
+                input.setWeight(weight + input.getInput() * learningRate * errSignal);
             }
         }
     }

@@ -169,7 +169,7 @@ public class CatlystNeuralNet extends NeuralNetwork {
     public class NetNeuron extends Neuron {
 
         public NetNeuron(NeuronInput... inputs) {
-            this.inputs = inputs;
+            super(inputs);
         }
 
         @Override

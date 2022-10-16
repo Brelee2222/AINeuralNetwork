@@ -8,8 +8,8 @@ public abstract class Learning {
     public final int answers;
     public Case[] testCases;
     public Case[] trainingCases;
-    public double accThresh = 0.99973;
-    public double maxEpoch = -1;
+    public double accThresh = 1;
+    public double maxEpoch = 5000;
 
     public Learning(NeuralNetwork network, int tests, int trainings, int inputs, int answers, String trainingPath, String testingPath) { // training data path and testing data path
         this.network = network;
