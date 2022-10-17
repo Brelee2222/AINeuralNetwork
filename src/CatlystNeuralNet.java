@@ -2,6 +2,8 @@ public class CatlystNeuralNet extends NeuralNetwork {
     // Catlyst is my signature
     // This Network is more experimental for different sizes, amounts of inputs, and layers and learning rate
     // It allows the network to do several operations in sequence effectively allowing interactions between inputs
+    // This Neural Network will disable and enable connections by itself
+    // No predefined layers
 
     // Layers : Ability to think/perform neuron interactions
     // LayerSize : Capacity to think
@@ -69,7 +71,7 @@ public class CatlystNeuralNet extends NeuralNetwork {
     }
 
     public double getRandWeight() {
-        return (Math.random()-0.5) * randWeight * 2;
+        return (Math.random()-0.5) * 2 * randWeight;
     }
 
     public class Bias implements NeuronInput {
