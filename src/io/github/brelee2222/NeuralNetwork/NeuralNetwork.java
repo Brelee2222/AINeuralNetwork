@@ -1,3 +1,8 @@
+package io.github.brelee2222.NeuralNetwork;
+
+import io.github.brelee2222.Neuron.Neuron;
+import io.github.brelee2222.Neuron.NeuronInput;
+
 public class NeuralNetwork {
     public Neuron[][] neuronLayers; // Makes it think more
     public double[] values; // the sensor values. Named so to not get confused with NeuronInputs in general

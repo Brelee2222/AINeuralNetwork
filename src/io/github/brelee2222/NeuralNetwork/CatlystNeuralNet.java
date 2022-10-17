@@ -1,3 +1,8 @@
+package io.github.brelee2222.NeuralNetwork;
+
+import io.github.brelee2222.Neuron.Neuron;
+import io.github.brelee2222.Neuron.NeuronInput;
+
 public class CatlystNeuralNet extends NeuralNetwork {
     // Catlyst is my signature
     // This Network is more experimental for different sizes, amounts of inputs, and layers and learning rate

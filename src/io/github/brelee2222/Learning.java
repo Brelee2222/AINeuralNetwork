@@ -1,3 +1,7 @@
+package io.github.brelee2222;
+
+import io.github.brelee2222.NeuralNetwork.NeuralNetwork;
+
 public abstract class Learning {
     public final NeuralNetwork network;
     public final int inputs;

@@ -1,3 +1,7 @@
+import io.github.brelee2222.NeuralNetwork.NeuralNetwork;
+import io.github.brelee2222.Neuron.Neuron;
+import io.github.brelee2222.Neuron.NeuronInput;
+
 import java.util.function.DoubleSupplier;
 
 public class NetTemplate extends NeuralNetwork { // Basic NeuralNet

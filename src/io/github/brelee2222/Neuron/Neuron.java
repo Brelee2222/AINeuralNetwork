@@ -1,3 +1,5 @@
+package io.github.brelee2222.Neuron;
+
 public abstract class Neuron {
     public NeuronInput[] inputs;
     private double errSignal;
