@@ -4,4 +4,5 @@ public interface NeuronInput {
     double getWeight(); // returns the weight
     void setWeight(double weight); // sets the weight to the given value and returns it
     Neuron getFrom(); //returns the Neuron source. returns null if it has no neuron
+//    double getULR(); // returns the unique learning rate of the input Deprecated
 }

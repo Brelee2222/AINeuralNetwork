@@ -5,7 +5,7 @@ public abstract class Learning {
     public Case[] testCases;
     public Case[] trainingCases;
     public double accThresh = 1;
-    public double maxEpoch = 5000;
+    public double maxEpoch = 1000;
 
     public Learning(NeuralNetwork network, int inputs, int answers) { // training data path and testing data path
         this.inputs = inputs;
@@ -13,7 +13,7 @@ public abstract class Learning {
         this.network = network;
     }
 
-    public void train() {
+    public double train() {
         double accuracy = 0.0;
         int epoch = 0;
         while(accuracy < accThresh && maxEpoch != epoch) {
@@ -24,6 +24,7 @@ public abstract class Learning {
             }
             System.out.println("accuracy: " + (accuracy /= trainingCases.length) + "   epoch: " + ++epoch);
         }
+        return accuracy;
     }
     public void test() {
         double accuracy = 0.0;

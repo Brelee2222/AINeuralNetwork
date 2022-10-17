@@ -73,7 +73,15 @@ public class CatlystNeuralNet extends NeuralNetwork {
     }
 
     public class Bias implements NeuronInput {
-        private double weight = getRandWeight();
+        private double weight;
+
+        public Bias() {
+            weight = getRandWeight();
+        }
+
+        public Bias(double weight) {
+            this.weight = weight;
+        }
 
         @Override
         public double get() {
@@ -102,10 +110,16 @@ public class CatlystNeuralNet extends NeuralNetwork {
     }
     public class SensorInput implements NeuronInput {
         private final int index;
-        private double weight = getRandWeight();
+        private double weight;
 
         public SensorInput(int index) {
             this.index = index;
+            weight = getRandWeight();
+        }
+
+        public SensorInput(int index, double weight) {
+            this.index = index;
+            this.weight = weight;
         }
 
         @Override
@@ -135,10 +149,15 @@ public class CatlystNeuralNet extends NeuralNetwork {
     }
     public class Input implements NeuronInput { // I didn't feel like calling it NeuronInputWasTaken
         private final Neuron source;
-        private double weight = getRandWeight();
+        private double weight;
 
         public Input(Neuron source) {
             this.source = source;
+            weight = getRandWeight();
+        }
+        public Input(Neuron source, double weight) {
+            this.source = source;
+            this.weight = weight;
         }
 
         @Override
