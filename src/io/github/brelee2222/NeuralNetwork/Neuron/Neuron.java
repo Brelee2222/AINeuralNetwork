@@ -1,4 +1,4 @@
-package io.github.brelee2222.Neuron;
+package io.github.brelee2222.NeuralNetwork.Neuron;
 
 public abstract class Neuron {
     public NeuronInput[] inputs;

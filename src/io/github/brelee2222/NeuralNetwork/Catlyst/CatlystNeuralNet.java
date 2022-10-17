@@ -1,7 +1,8 @@
-package io.github.brelee2222.NeuralNetwork;
+package io.github.brelee2222.NeuralNetwork.Catlyst;
 
-import io.github.brelee2222.Neuron.Neuron;
-import io.github.brelee2222.Neuron.NeuronInput;
+import io.github.brelee2222.NeuralNetwork.Network.NeuralNetwork;
+import io.github.brelee2222.NeuralNetwork.Neuron.Neuron;
+import io.github.brelee2222.NeuralNetwork.Neuron.NeuronInput;
 
 public class CatlystNeuralNet extends NeuralNetwork {
     // Catlyst is my signature

@@ -1,7 +1,7 @@
-package io.github.brelee2222.NeuralNetwork;
+package io.github.brelee2222.NeuralNetwork.Network;
 
-import io.github.brelee2222.Neuron.Neuron;
-import io.github.brelee2222.Neuron.NeuronInput;
+import io.github.brelee2222.NeuralNetwork.Neuron.Neuron;
+import io.github.brelee2222.NeuralNetwork.Neuron.NeuronInput;
 
 public class NeuralNetwork {
     public Neuron[][] neuronLayers; // Makes it think more
