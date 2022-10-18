@@ -4,6 +4,7 @@ import io.github.brelee2222.NeuralNetwork.Neuron.Neuron;
 import io.github.brelee2222.NeuralNetwork.Neuron.NeuronInput;
 
 public class NeuralNetwork {
+    public int inputs;
     public Neuron[][] neuronLayers; // Makes it think more
     public double[] values; // the sensor values. Named so to not get confused with NeuronInputs in general
     public double learningRate;
@@ -16,7 +17,7 @@ public class NeuralNetwork {
         period++;
         Neuron[] terminalNeurons = neuronLayers[0];
         double[] values = new double[terminalNeurons.length];
-        for(int i = 0; i != values.length; i++)
+        for(int i = 0; i != inputs; i++)
             values[i] = terminalNeurons[i].get();
         return values;
     }

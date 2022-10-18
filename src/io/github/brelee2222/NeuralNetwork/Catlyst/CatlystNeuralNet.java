@@ -17,7 +17,6 @@ public class CatlystNeuralNet extends NeuralNetwork {
     // Results : terminals
     // RandWeight : weight randomness
 
-    public final int inputs;
     public final int results;
     public final int layers;
     public final double randWeight;
@@ -61,7 +60,7 @@ public class CatlystNeuralNet extends NeuralNetwork {
             layerSizes[i] = layerSize;
         return new CatlystNeuralNet(inputs, layerSizes, randWeight, learningRate);
     }
-    public static CatlystNeuralNet makeNetwork(int inputs, int results, int[] layerSizes, double randWeight, double learningRate) {
+    public static CatlystNeuralNet makeNetwork(int inputs, int[] layerSizes, double randWeight, double learningRate) {
         return new CatlystNeuralNet(inputs, layerSizes, randWeight, learningRate);
     }
 
