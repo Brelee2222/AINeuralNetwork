@@ -28,6 +28,7 @@ public class CatlystNeuralNet extends NeuralNetwork {
         this.inputs = inputs;
         this.results = layerSizes[0];
         this.layers = layerSizes.length;
+        this.values = new double[inputs];
 
         neuronLayers = new Neuron[layers][];
         Neuron[] prevLayer = neuronLayers[layers-1] = new Neuron[layerSizes[layers-1]];
@@ -53,12 +54,14 @@ public class CatlystNeuralNet extends NeuralNetwork {
         }
     }
 
-    //TODO: add static method makeNetwork(params); (more)
     public static CatlystNeuralNet makeNetwork(int inputs, int results, int layers, int layerSize, double randWeight, double learningRate) {
         int[] layerSizes = new int[layers];
         layerSizes[0] = results;
         for(int i = 1; i != layers; i++)
             layerSizes[i] = layerSize;
+        return new CatlystNeuralNet(inputs, layerSizes, randWeight, learningRate);
+    }
+    public static CatlystNeuralNet makeNetwork(int inputs, int results, int[] layerSizes, double randWeight, double learningRate) {
         return new CatlystNeuralNet(inputs, layerSizes, randWeight, learningRate);
     }
 
