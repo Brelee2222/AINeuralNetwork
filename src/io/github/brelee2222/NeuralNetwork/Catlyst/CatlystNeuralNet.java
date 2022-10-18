@@ -20,35 +20,18 @@ public class CatlystNeuralNet extends NeuralNetwork {
     public final int inputs;
     public final int results;
     public final int layers;
-    public final int layerSize;
     public final double randWeight;
 
-    public CatlystNeuralNet(int inputs, int results, int layers, int layerSize, double randWeight, double learningRate) {
+    private CatlystNeuralNet(int inputs, int[] layerSizes, double randWeight, double learningRate) {
         this.randWeight = randWeight;
         this.learningRate = learningRate;
-        init(
-                this.inputs = inputs,
-                this.results = results,
-                this.layers = layers,
-                this.layerSize = layerSize
-        );
-    }
-    public CatlystNeuralNet(int inputs, int results, int layers, int layerSize) {
-        this.randWeight = 0.05;
-        this.learningRate = 1;
-        init(
-                this.inputs = inputs,
-                this.results = results,
-                this.layers = layers,
-                this.layerSize = layerSize
-        );
-    }
+        this.inputs = inputs;
+        this.results = layerSizes[0];
+        this.layers = layerSizes.length;
 
-    private void init(int inputs, int results, int layers, int layerSize) {
-        values = new double[inputs];
         neuronLayers = new Neuron[layers][];
-        Neuron[] prevLayer = neuronLayers[layers-1] = new Neuron[layerSize];
-        Neuron[] terminalLayer = neuronLayers[0] = new Neuron[results];
+        Neuron[] prevLayer = neuronLayers[layers-1] = new Neuron[layerSizes[layers-1]];
+        int layerSize = layerSizes[layers-1];
         for(int i = 0; i != layerSize; i++) {
             NeuronInput[] neuronInputs = new NeuronInput[inputs+1];
             neuronInputs[inputs] = new Bias();
@@ -56,24 +39,27 @@ public class CatlystNeuralNet extends NeuralNetwork {
                 neuronInputs[j] = new SensorInput(j);
             prevLayer[i] = new NetNeuron(neuronInputs);
         }
-        for(int i = layers-2; i != 0; i--) {
-            Neuron[] neuronLayer = neuronLayers[i] = new Neuron[layerSize];
+        for(int i = layers-2; i != -1; i--) {
+            int prevLayerSize = layerSize;
+            Neuron[] neuronLayer = neuronLayers[i] = new Neuron[layerSize = layerSizes[i]];
             for(int j = 0; j != layerSize; j++) {
-                NeuronInput[] neuronInputs = new NeuronInput[layerSize+1];
-                neuronInputs[layerSize] = new Bias();
-                for(int l = 0; l != layerSize; l++)
+                NeuronInput[] neuronInputs = new NeuronInput[prevLayerSize+1];
+                neuronInputs[prevLayerSize] = new Bias();
+                for(int l = 0; l != prevLayerSize; l++)
                     neuronInputs[l] = new Input(prevLayer[l]);
                 neuronLayer[j] = new NetNeuron(neuronInputs);
             }
             prevLayer = neuronLayer;
         }
-        for(int i = 0; i != results; i++) {
-            NeuronInput[] neuronInputs = new NeuronInput[layerSize+1];
-            neuronInputs[layerSize] = new Bias();
-            for(int j = 0; j != layerSize; j++)
-                neuronInputs[j] = new Input(prevLayer[j]);
-            terminalLayer[i] = new NetNeuron(neuronInputs);
-        }
+    }
+
+    //TODO: add static method makeNetwork(params); (more)
+    public static CatlystNeuralNet makeNetwork(int inputs, int results, int layers, int layerSize, double randWeight, double learningRate) {
+        int[] layerSizes = new int[layers];
+        layerSizes[0] = results;
+        for(int i = 1; i != layers; i++)
+            layerSizes[i] = layerSize;
+        return new CatlystNeuralNet(inputs, layerSizes, randWeight, learningRate);
     }
 
     public double getRandWeight() {
