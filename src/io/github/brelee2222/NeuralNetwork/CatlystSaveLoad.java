@@ -18,8 +18,8 @@ public class CatlystSaveLoad {
                 8
                 + network.neuronLayers.length*4
                 + network.inputs*8;
-        for(int i = 1; i+1 != network.neuronLayers.length; i++)
-            size += network.neuronLayers[i].length*8;
+        for(int i = 1; i+1 != network.neuronLayers.length; i++) for(Neuron neuron : network.neuronLayers[i])
+            size += neuron.inputs.length*8;
 
         byte[] data = new byte[size];
         int index = 0;
