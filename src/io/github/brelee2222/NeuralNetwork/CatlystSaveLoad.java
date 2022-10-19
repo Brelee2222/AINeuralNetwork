@@ -1,6 +1,8 @@
 package io.github.brelee2222.NeuralNetwork;
 
 import io.github.brelee2222.NeuralNetwork.Network.NeuralNetwork;
+import io.github.brelee2222.NeuralNetwork.Neuron.Neuron;
+import io.github.brelee2222.NeuralNetwork.Neuron.NeuronInput;
 
 public class CatlystSaveLoad {
     /**
@@ -21,8 +23,8 @@ public class CatlystSaveLoad {
 
         byte[] data = new byte[size];
         int index = 0;
-
-
+        for(Neuron[] layer : network.neuronLayers) for(Neuron neuron : layer) for(NeuronInput input : neuron.inputs)
+            index = writeLong(Double.doubleToLongBits(input.getWeight()), data, index);
     }
 
     public static int writeByte(byte value, byte[] data, int index) {
@@ -36,5 +38,9 @@ public class CatlystSaveLoad {
 
     public static int writeInt(int value, byte[] data, int index) {
         return writeShort((short) (value & 0xffff), data, writeShort((short) ((value >> 16) & 0xffff), data, index));
+    }
+
+    public static int writeLong(long value, byte[] data, int index) {
+        return writeInt((int) value, data, writeInt((int) (value >> 32), data, index));
     }
 }
