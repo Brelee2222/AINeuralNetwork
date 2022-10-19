@@ -16,8 +16,9 @@ public class NeuralNetwork {
     public double[] get() {
         period++;
         Neuron[] terminalNeurons = neuronLayers[0];
-        double[] values = new double[terminalNeurons.length];
-        for(int i = 0; i != inputs; i++)
+        int results = terminalNeurons.length;
+        double[] values = new double[results];
+        for(int i = 0; i != results; i++)
             values[i] = terminalNeurons[i].get();
         return values;
     }
