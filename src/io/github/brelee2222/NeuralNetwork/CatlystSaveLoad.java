@@ -55,10 +55,11 @@ public class CatlystSaveLoad {
         int layers = readInt();
 
         int[] layerSizes = new int[layers];
+        int prevLayer = inputs;
         for(int i = 0; i != layers; i++)
             layerSizes[i] = readInt();
-        NeuralNetwork network = CatlystNeuralNet.makeNetwork(inputs, layerSizes, 0, 0);
-        for(int i = 0; i != layers; i++) for(Neuron neuron : network.neuronLayers[i]) for(NeuronInput neuronInput : neuron.inputs)
+        CatlystNeuralNet network = CatlystNeuralNet.makeNetwork(inputs, layerSizes, 0, 0);
+        for(Neuron[] layer : network.neuronLayers) for(Neuron neuron : layer) for(NeuronInput neuronInput : neuron.inputs)
             neuronInput.setWeight(Double.longBitsToDouble(readLong()));
         return network;
     }
@@ -70,7 +71,7 @@ public class CatlystSaveLoad {
         return (short) ((short) readByte() << 8 | readByte() & 0xff);
     }
     public static int readInt() {
-        return (int) readShort() << 16 | readShort() & 0xffff;
+        return (int) readShort() << 16 | Short.toUnsignedInt(readShort());
     }
     public static long readLong() {
         return (long) readInt() << 32 | readInt() & 0xffffffffL;

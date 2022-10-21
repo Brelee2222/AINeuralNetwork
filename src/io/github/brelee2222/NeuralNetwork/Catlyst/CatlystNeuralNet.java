@@ -75,7 +75,7 @@ public class CatlystNeuralNet extends NeuralNetwork {
             weight = getRandWeight();
         }
 
-        public Bias(double weight) {
+        private Bias(double weight) {
             this.weight = weight;
         }
 
@@ -113,7 +113,7 @@ public class CatlystNeuralNet extends NeuralNetwork {
             weight = getRandWeight();
         }
 
-        public SensorInput(int index, double weight) {
+        private SensorInput(int index, double weight) {
             this.index = index;
             this.weight = weight;
         }

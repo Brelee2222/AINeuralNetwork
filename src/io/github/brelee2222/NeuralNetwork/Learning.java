@@ -3,7 +3,7 @@ package io.github.brelee2222.NeuralNetwork;
 import io.github.brelee2222.NeuralNetwork.Network.NeuralNetwork;
 
 public abstract class Learning {
-    public final NeuralNetwork network;
+    public NeuralNetwork network;
     public final int inputs;
     public final int answers;
     public Case[] testCases;
