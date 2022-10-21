@@ -1,4 +1,4 @@
-package io.github.brelee2222.NeuralNetwork.Catlyst;
+package io.github.brelee2222.NeuralNetwork.utils.Catlyst;
 
 import io.github.brelee2222.NeuralNetwork.Network.NeuralNetwork;
 import io.github.brelee2222.NeuralNetwork.Neuron.Neuron;
