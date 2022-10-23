@@ -1,42 +1,48 @@
-package io.github.catlystgit.NeuralNet;
+package io.github.catlystgit.NeuralNet.Network;
 
 import io.github.catlystgit.NeuralNet.Neuron.Neuron;
 import io.github.catlystgit.NeuralNet.Neuron.NeuronInput;
 
 public abstract class NeuralNetwork {
     public Neuron[][] layers;
+//    public int totalLayers; layers.length
     public final int inputs;
     public final int results;
+    public double randWeightRange;
     public double learningRate;
-    public int period;
 
-    public NeuralNetwork(int inputs, int[] layerSizes, double learningRate) {
+    public NeuralNetwork(int inputs, int[] layerSizes, double randWeightRange, double learningRate) {
         this.inputs = inputs;
         this.learningRate = learningRate;
+        this.randWeightRange = randWeightRange;
         results = layerSizes[0];
         layers = new Neuron[layerSizes.length][];
-        for(int i = 0; i != layerSizes.length; i++) {
-            int layerSize = layerSizes[i];
-            Neuron[] layer = layers[i] = new Neuron[layerSize];
-            for(int j = 0; j != layerSize; j++)
-                layer[j] = makeNeuron(i);
-        }
+        for(int i = 0; i != layerSizes.length; i++)
+            layers[i] = new Neuron[layerSizes[i]];
     }
 
-    public abstract Neuron makeNeuron(int layer);
+    // Makes the network
+    public abstract void makeNetwork();
+
+    // Sets the sensor values
     public abstract void set(double[] values);
+
+    // Gets values from terminal neurons
     public double[] get() {
-        period++;
         double[] results = new double[this.results];
         int index = 0;
         for(Neuron neuron : layers[0])
             results[index++] = neuron.get();
         return results;
     }
+
+    // Get method with set built-in
     public double[] get(double[] values) {
         set(values);
         return get();
     }
+
+    // Learns from answers
     public void learn(double[] correctAnswers) {
         Neuron[] terminalNeurons = layers[0];
         for(int i = 0; i != terminalNeurons.length; i++) {
