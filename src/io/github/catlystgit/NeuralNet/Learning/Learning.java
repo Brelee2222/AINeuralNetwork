@@ -1,6 +1,6 @@
-package io.github.catlystgit.Learning;
+package io.github.catlystgit.NeuralNet.Learning;
 
-import io.github.catlystgit.Network.NeuralNetwork;
+import io.github.catlystgit.NeuralNet.Network.NeuralNetwork;
 
 public abstract class Learning {
     public NeuralNetwork network;

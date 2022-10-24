@@ -1,8 +1,8 @@
-package io.github.catlystgit.Catlyst;
+package io.github.catlystgit.NeuralNet.Catlyst;
 
-import io.github.catlystgit.Neuron.Neuron;
-import io.github.catlystgit.Network.NeuralNetwork;
-import io.github.catlystgit.Neuron.NeuronInput;
+import io.github.catlystgit.NeuralNet.Neuron.Neuron;
+import io.github.catlystgit.NeuralNet.Network.NeuralNetwork;
+import io.github.catlystgit.NeuralNet.Neuron.NeuronInput;
 
 import java.util.Random;
 
@@ -31,7 +31,7 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
                 neuronInputs[j] = new SensorInput(j);
             prevLayer[i] = new CatlystNeuron(neuronInputs);
         }
-        for(int i = layers.length-2; i != 0; i--) {
+        for(int i = layers.length-2; i != -1; i--) {
             Neuron[] layer = layers[i];
             for(int j = 0; j != layer.length; j++) {
                 NeuronInput[] neuronInputs = new NeuronInput[prevLayer.length+1];

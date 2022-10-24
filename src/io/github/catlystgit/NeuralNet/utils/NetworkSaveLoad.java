@@ -1,9 +1,9 @@
-package io.github.catlystgit.utils;
+package io.github.catlystgit.NeuralNet.utils;
 
-import io.github.catlystgit.Catlyst.CatlystNeuralNetwork;
-import io.github.catlystgit.Network.NeuralNetwork;
-import io.github.catlystgit.Neuron.Neuron;
-import io.github.catlystgit.Neuron.NeuronInput;
+import io.github.catlystgit.NeuralNet.Catlyst.CatlystNeuralNetwork;
+import io.github.catlystgit.NeuralNet.Network.NeuralNetwork;
+import io.github.catlystgit.NeuralNet.Neuron.Neuron;
+import io.github.catlystgit.NeuralNet.Neuron.NeuronInput;
 
 import java.io.File;
 import java.io.FileNotFoundException;

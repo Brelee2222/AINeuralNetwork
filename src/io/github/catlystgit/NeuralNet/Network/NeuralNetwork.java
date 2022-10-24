@@ -1,7 +1,7 @@
-package io.github.catlystgit.Network;
+package io.github.catlystgit.NeuralNet.Network;
 
-import io.github.catlystgit.Neuron.Neuron;
-import io.github.catlystgit.Neuron.NeuronInput;
+import io.github.catlystgit.NeuralNet.Neuron.Neuron;
+import io.github.catlystgit.NeuralNet.Neuron.NeuronInput;
 
 public abstract class NeuralNetwork {
     public Neuron[][] layers;

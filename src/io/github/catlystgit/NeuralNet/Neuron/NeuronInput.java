@@ -1,4 +1,4 @@
-package io.github.catlystgit.Neuron;
+package io.github.catlystgit.NeuralNet.Neuron;
 
 public interface NeuronInput {
     double get(); // return the value of input * weight
