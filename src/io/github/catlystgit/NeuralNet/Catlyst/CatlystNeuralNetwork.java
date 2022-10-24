@@ -9,18 +9,19 @@ import java.util.Random;
 public class CatlystNeuralNetwork extends NeuralNetwork {
     private int period;
     private double[] values;
-    public Random random = new Random();
-
-    public CatlystNeuralNetwork(int inputs, int[] layerSizes, double randWeight, double learningRate) {
+    public Random random;
+    public int seed;
+    public CatlystNeuralNetwork(int inputs, int[] layerSizes, double randWeight, double learningRate, int seed) {
         super(inputs, layerSizes, randWeight, learningRate);
     }
 
     public void setRandomSeed(int seed) {
-        random.setSeed(seed);
+        random.setSeed(this.seed = seed);
     }
 
     @Override
     public void makeNetwork() {
+        this.random = new Random(seed);
         values = new double[inputs];
 
         Neuron[] prevLayer = layers[layers.length-1];
@@ -31,6 +32,7 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
                 neuronInputs[j] = new SensorInput(j);
             prevLayer[i] = new CatlystNeuron(neuronInputs);
         }
+        System.out.println(layers.length);
         for(int i = layers.length-2; i != -1; i--) {
             Neuron[] layer = layers[i];
             for(int j = 0; j != layer.length; j++) {

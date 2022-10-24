@@ -19,6 +19,7 @@ public abstract class NeuralNetwork {
         layers = new Neuron[layerSizes.length][];
         for(int i = 0; i != layerSizes.length; i++)
             layers[i] = new Neuron[layerSizes[i]];
+        makeNetwork();
     }
 
     // Makes the network
