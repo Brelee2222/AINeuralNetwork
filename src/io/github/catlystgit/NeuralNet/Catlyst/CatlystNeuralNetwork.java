@@ -10,18 +10,18 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
     private int period;
     private double[] values;
     public Random random;
-    public int seed;
-    public CatlystNeuralNetwork(int inputs, int[] layerSizes, double randWeight, double learningRate, int seed) {
+
+    public CatlystNeuralNetwork(int inputs, int[] layerSizes, double randWeight, double learningRate) {
         super(inputs, layerSizes, randWeight, learningRate);
     }
 
     public void setRandomSeed(int seed) {
-        random.setSeed(this.seed = seed);
+        random.setSeed(seed);
     }
 
     @Override
     public void makeNetwork() {
-        this.random = new Random(seed);
+        this.random = new Random();
         values = new double[inputs];
 
         Neuron[] prevLayer = layers[layers.length-1];
