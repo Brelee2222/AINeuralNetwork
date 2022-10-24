@@ -1,8 +1,9 @@
-package io.github.catlystgit.NeuralNet.Catlyst;
+package io.github.catlystgit.Catlyst;
 
-import io.github.catlystgit.NeuralNet.Network.NeuralNetwork;
-import io.github.catlystgit.NeuralNet.Neuron.Neuron;
-import io.github.catlystgit.NeuralNet.Neuron.NeuronInput;
+import io.github.catlystgit.Neuron.Neuron;
+import io.github.catlystgit.Network.NeuralNetwork;
+import io.github.catlystgit.Neuron.NeuronInput;
+
 import java.util.Random;
 
 public class CatlystNeuralNetwork extends NeuralNetwork {

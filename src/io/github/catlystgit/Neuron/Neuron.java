@@ -1,4 +1,4 @@
-package io.github.catlystgit.NeuralNet.Neuron;
+package io.github.catlystgit.Neuron;
 
 public interface Neuron {
     NeuronInput[] getInputs();
