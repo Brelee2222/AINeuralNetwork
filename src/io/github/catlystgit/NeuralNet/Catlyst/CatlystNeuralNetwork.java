@@ -56,7 +56,6 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
 
         Neuron[] prevLayer = layers[layers.length-1];
         for(int i = 0; i != prevLayer.length; i++) {
-            System.out.println(weights[weights.length-1]);
             NeuronInput[] neuronInputs = new NeuronInput[weights[weights.length-1][i].length];
             prevLayer[i] = new CatlystNeuron(neuronInputs);
             neuronInputs[inputs] = new Bias(weights[layers.length-1][i][weights[layers.length-1][i].length-1]);
