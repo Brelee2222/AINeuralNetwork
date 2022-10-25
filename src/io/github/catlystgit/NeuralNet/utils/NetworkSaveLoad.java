@@ -5,10 +5,7 @@ import io.github.catlystgit.NeuralNet.Network.NeuralNetwork;
 import io.github.catlystgit.NeuralNet.Neuron.Neuron;
 import io.github.catlystgit.NeuralNet.Neuron.NeuronInput;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 
 public class NetworkSaveLoad {
@@ -20,76 +17,50 @@ public class NetworkSaveLoad {
      * 4. Neuron inputs (double)...
      */
 
-    private static int index;
-    private static byte[] data;
-
     public static void save(NeuralNetwork network, String path) {
-        int size = 8 + network.layers.length*4;
-        for(int i = 0; i != network.layers.length; i++) for(Neuron neuron : network.layers[i])
-            size += neuron.getInputs().length*8;
-        data = new byte[size];
-        index = 0;
-        writeInt(network.inputs);
-        writeInt(network.layers.length);
-        for(Neuron[] layer : network.layers)
-            writeInt(layer.length);
-        for(Neuron[] layer : network.layers) for(Neuron neuron : layer) for(NeuronInput input : neuron.getInputs())
-            writeLong(Double.doubleToLongBits(input.getWeight()));
-        try (FileOutputStream fileOutputStream = new FileOutputStream(path)) {
-            fileOutputStream.write(data);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        try {
+            DataOutputStream dataWriter = new DataOutputStream(new FileOutputStream(path));
+            dataWriter.writeInt(network.inputs);
+            dataWriter.writeInt(network.layers.length);
+            for(Neuron[] layer : network.layers)
+                dataWriter.writeInt(layer.length);
+            for(Neuron[] layer : network.layers) for(Neuron neuron : layer) for(NeuronInput input : neuron.getInputs())
+                dataWriter.writeDouble(input.getWeight());
+            dataWriter.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public static NeuralNetwork read(String path) {
+
         try {
-            data = Files.readAllBytes(new File(path).toPath());
+            DataInputStream inpStream = new DataInputStream(new FileInputStream(path));
+
+            int inputs = inpStream.readInt();
+            int layers = inpStream.readInt();
+
+            double[][][] weights = new double[layers][][];
+            for(int i = 0; i != layers; i++)
+                weights[i] = new double[inpStream.readInt()][];
+            for(int k = 0; k != layers-1; k++) {
+                int prevLayer = weights[k+1].length+1;
+                double[][] layer = weights[k];
+                for(int i = 0; i != layer.length; i++) {
+                    double[] neuronWeight = layer[i] = new double[prevLayer];
+                    for(int j = 0; j != prevLayer; j++)
+                        neuronWeight[j] = inpStream.readDouble();
+                }
+            }
+            double[][] layer = weights[layers-1];
+            for(int i = 0; i != layer.length; i++) {
+                double[] neuronWeight = layer[i] = new double[inputs+1];
+                for(int j = 0; j != neuronWeight.length; j++)
+                    neuronWeight[j] = inpStream.readDouble();
+            }
+            return new CatlystNeuralNetwork(inputs, weights, 0, 0.0);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        index = 0;
-        int inputs = readInt();
-        int layers = readInt();
-
-        int[] layerSizes = new int[layers];
-        int prevLayer = inputs;
-        for(int i = 0; i != layers; i++)
-            layerSizes[i] = readInt();
-        CatlystNeuralNetwork network = new CatlystNeuralNetwork(inputs, layerSizes, 0, 0);
-        for(Neuron[] layer : network.layers) for(Neuron neuron : layer) for(NeuronInput neuronInput : neuron.getInputs())
-            neuronInput.setWeight(Double.longBitsToDouble(readLong()));
-        return network;
-    }
-
-    public static byte readByte() {
-        return data[index++];
-    }
-    public static short readShort() {
-        return (short) ((short) readByte() << 8 | readByte() & 0xff);
-    }
-    public static int readInt() {
-        return (int) readShort() << 16 | Short.toUnsignedInt(readShort());
-    }
-    public static long readLong() {
-        return (long) readInt() << 32 | readInt() & 0xffffffffL;
-    }
-
-    public static void writeByte(byte value) {
-        data[index++] = value;
-    } // could've made a universal writeFUnction
-    public static void writeShort(short value) {
-        writeByte((byte) (value >> 8));
-        writeByte((byte) value);
-    }
-    public static void writeInt(int value) {
-        writeShort((short) (value >> 16));
-        writeShort((short) value);
-    }
-    public static void writeLong(long value) {
-        writeInt((int) (value >> 32));
-        writeInt((int) value);
     }
 }

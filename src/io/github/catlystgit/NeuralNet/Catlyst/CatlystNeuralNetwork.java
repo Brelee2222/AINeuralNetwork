@@ -15,6 +15,10 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         super(inputs, layerSizes, randWeight, learningRate);
     }
 
+    public CatlystNeuralNetwork(int inputs, double[][][] weights, double randWeight, double learningRate) {
+        super(inputs, weights, randWeight, learningRate);
+    }
+
     public void setRandomSeed(int seed) {
         random.setSeed(seed);
     }
@@ -27,21 +31,46 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         Neuron[] prevLayer = layers[layers.length-1];
         for(int i = 0; i != prevLayer.length; i++) {
             NeuronInput[] neuronInputs = new NeuronInput[inputs+1];
+            prevLayer[i] = new CatlystNeuron(neuronInputs);
             neuronInputs[inputs] = new Bias();
             for(int j = 0; j != inputs; j++)
                 neuronInputs[j] = new SensorInput(j);
-            prevLayer[i] = new CatlystNeuron(neuronInputs);
         }
-        System.out.println(layers.length);
         for(int i = layers.length-2; i != -1; i--) {
             Neuron[] layer = layers[i];
             for(int j = 0; j != layer.length; j++) {
                 NeuronInput[] neuronInputs = new NeuronInput[prevLayer.length+1];
+                layer[j] = new CatlystNeuron(neuronInputs);
                 neuronInputs[prevLayer.length] = new Bias();
                 int k = 0;
                 for(Neuron neuron : prevLayer)
                     neuronInputs[k++] = new Input(neuron);
+            }
+            prevLayer = layer;
+        }
+    }
+
+    @Override
+    public void makeNetwork(double[][][] weights) {
+        values = new double[inputs];
+
+        Neuron[] prevLayer = layers[layers.length-1];
+        for(int i = 0; i != prevLayer.length; i++) {
+            System.out.println(weights[weights.length-1]);
+            NeuronInput[] neuronInputs = new NeuronInput[weights[weights.length-1][i].length];
+            prevLayer[i] = new CatlystNeuron(neuronInputs);
+            neuronInputs[inputs] = new Bias(weights[layers.length-1][i][weights[layers.length-1][i].length-1]);
+            for(int j = 0; j != inputs; j++)
+                neuronInputs[j] = new SensorInput(j, weights[layers.length-1][i][j]);
+        }
+        for(int i = layers.length-2; i != -1; i--) {
+            Neuron[] layer = layers[i];
+            for(int j = 0; j != layer.length; j++) {
+                NeuronInput[] neuronInputs = new NeuronInput[weights[i][j].length];
                 layer[j] = new CatlystNeuron(neuronInputs);
+                neuronInputs[prevLayer.length] = new Bias(weights[i][j][prevLayer.length]);
+                for(int k = 0; k != prevLayer.length; k++)
+                    neuronInputs[k] = new Input(prevLayer[k], weights[i][j][k]);
             }
             prevLayer = layer;
         }
@@ -120,11 +149,16 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         }
     }
     public class SensorInput implements NeuronInput {
-        protected double weight = getRandWeight();
+        protected double weight;
         public final int sensorIndex;
 
         public SensorInput(int sensorIndex) {
             this.sensorIndex = sensorIndex;
+            this.weight = getRandWeight();
+        }
+        public SensorInput(int sensorIndex, double weight) {
+            this.sensorIndex = sensorIndex;
+            this.weight = weight;
         }
 
         @Override
@@ -153,7 +187,15 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         }
     }
     public class Bias implements NeuronInput {
-        protected double weight = getRandWeight();
+        protected double weight;
+
+        public Bias() {
+            this.weight = getRandWeight();
+        }
+
+        public Bias(double weight) {
+            this.weight = weight;
+        }
 
         @Override
         public double get() {
@@ -181,11 +223,17 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         }
     }
     public class Input implements NeuronInput {
-        protected double weight = getRandWeight();
+        protected double weight;
         public final Neuron source;
 
         public Input(Neuron source) {
             this.source = source;
+            this.weight = getRandWeight();
+        }
+
+        public Input(Neuron source, double weight) {
+            this.source = source;
+            this.weight = weight;
         }
 
         @Override

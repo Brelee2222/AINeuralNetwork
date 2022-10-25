@@ -22,8 +22,23 @@ public abstract class NeuralNetwork {
         makeNetwork();
     }
 
+    public NeuralNetwork(int inputs, double[][][] weights, double randWeightRange, double learningRate) {
+        this.inputs = inputs;
+        this.learningRate = learningRate;
+        this.randWeightRange = randWeightRange;
+        results = weights[0].length;
+        layers = new Neuron[weights.length][];
+        int prevLayer = inputs;
+        for(int i = 0; i != weights.length; i++)
+            layers[i] = new Neuron[weights[i].length];
+        makeNetwork(weights);
+    }
+
     // Makes the network
     public abstract void makeNetwork();
+
+    // Makes network with predefined weights
+    public abstract void makeNetwork(double[][][] weights);
 
     // Sets the sensor values
     public abstract void set(double[] values);
