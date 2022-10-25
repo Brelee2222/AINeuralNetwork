@@ -46,12 +46,13 @@ public class NetworkSaveLoad {
             int prevSize = 0;
             for(int i = 0; i != layers; i++)
                 totalWeights += prevSize * ((layerSizes[i] = prevSize = inpStream.readInt())+1);
-            totalWeights += layerSizes[layers-1] * (inputs+1);
+            totalWeights += prevSize * (inputs+1);
 
             double[] weights = new double[totalWeights];
 
             for(int i = 0; i != totalWeights; i++)
                 weights[i] = inpStream.readDouble();
+            inpStream.close();
             return new CatlystNeuralNetwork(inputs, layerSizes, weights, 0, 0.0);
         } catch (IOException e) {
             throw new RuntimeException(e);
