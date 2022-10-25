@@ -40,25 +40,19 @@ public class NetworkSaveLoad {
             int inputs = inpStream.readInt();
             int layers = inpStream.readInt();
 
-            double[][][] weights = new double[layers][][];
+            int[] layerSizes = new int[layers];
+            int totalWeights = 0;
+
+            int prevSize = 0;
             for(int i = 0; i != layers; i++)
-                weights[i] = new double[inpStream.readInt()][];
-            for(int k = 0; k != layers-1; k++) {
-                int prevLayer = weights[k+1].length+1;
-                double[][] layer = weights[k];
-                for(int i = 0; i != layer.length; i++) {
-                    double[] neuronWeight = layer[i] = new double[prevLayer];
-                    for(int j = 0; j != prevLayer; j++)
-                        neuronWeight[j] = inpStream.readDouble();
-                }
-            }
-            double[][] layer = weights[layers-1];
-            for(int i = 0; i != layer.length; i++) {
-                double[] neuronWeight = layer[i] = new double[inputs+1];
-                for(int j = 0; j != neuronWeight.length; j++)
-                    neuronWeight[j] = inpStream.readDouble();
-            }
-            return new CatlystNeuralNetwork(inputs, weights, 0, 0.0);
+                totalWeights += prevSize * ((layerSizes[i] = prevSize = inpStream.readInt())+1);
+            totalWeights += layerSizes[layers-1] * (inputs+1);
+
+            double[] weights = new double[totalWeights];
+
+            for(int i = 0; i != totalWeights; i++)
+                weights[i] = inpStream.readDouble();
+            return new CatlystNeuralNetwork(inputs, layerSizes, weights, 0, 0.0);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -15,8 +15,8 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         super(inputs, layerSizes, randWeight, learningRate);
     }
 
-    public CatlystNeuralNetwork(int inputs, double[][][] weights, double randWeight, double learningRate) {
-        super(inputs, weights, randWeight, learningRate);
+    public CatlystNeuralNetwork(int inputs, int[] layerSizes, double[] weights, double randWeight, double learningRate) {
+        super(inputs, layerSizes, weights, randWeight, learningRate);
     }
 
     public void setRandomSeed(int seed) {
@@ -51,28 +51,12 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
     }
 
     @Override
-    public void makeNetwork(double[][][] weights) {
-        values = new double[inputs];
+    public void makeNetwork(double[] weights) {
+        makeNetwork();
 
-        Neuron[] prevLayer = layers[layers.length-1];
-        for(int i = 0; i != prevLayer.length; i++) {
-            NeuronInput[] neuronInputs = new NeuronInput[weights[weights.length-1][i].length];
-            prevLayer[i] = new CatlystNeuron(neuronInputs);
-            neuronInputs[inputs] = new Bias(weights[layers.length-1][i][weights[layers.length-1][i].length-1]);
-            for(int j = 0; j != inputs; j++)
-                neuronInputs[j] = new SensorInput(j, weights[layers.length-1][i][j]);
-        }
-        for(int i = layers.length-2; i != -1; i--) {
-            Neuron[] layer = layers[i];
-            for(int j = 0; j != layer.length; j++) {
-                NeuronInput[] neuronInputs = new NeuronInput[weights[i][j].length];
-                layer[j] = new CatlystNeuron(neuronInputs);
-                neuronInputs[prevLayer.length] = new Bias(weights[i][j][prevLayer.length]);
-                for(int k = 0; k != prevLayer.length; k++)
-                    neuronInputs[k] = new Input(prevLayer[k], weights[i][j][k]);
-            }
-            prevLayer = layer;
-        }
+        int index = 0;
+        for(Neuron[] layer : layers) for(Neuron neuron : layer) for(NeuronInput neuronInput : neuron.getInputs())
+            neuronInput.setWeight(weights[index++]);
     }
 
     @Override
