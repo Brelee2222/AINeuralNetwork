@@ -22,7 +22,7 @@ public abstract class NeuralNetwork {
     }
 
     // Makes the network
-    public abstract void makeNetwork();
+    public abstract void makeNetwork(int[] layerSizes);
 
     // Sets the sensor values
     public abstract void set(double[] values);
