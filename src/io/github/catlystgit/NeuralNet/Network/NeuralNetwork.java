@@ -19,25 +19,10 @@ public abstract class NeuralNetwork {
         layers = new Neuron[layerSizes.length][];
         for(int i = 0; i != layerSizes.length; i++)
             layers[i] = new Neuron[layerSizes[i]];
-        makeNetwork();
-    }
-
-    public NeuralNetwork(int inputs, int[] layerSizes, double[] weights, double randWeightRange, double learningRate) {
-        this.inputs = inputs;
-        this.learningRate = learningRate;
-        this.randWeightRange = randWeightRange;
-        results = layerSizes[0];
-        layers = new Neuron[layerSizes.length][];
-        for(int i = 0; i != layerSizes.length; i++)
-            layers[i] = new Neuron[layerSizes[i]];
-        makeNetwork(weights);
     }
 
     // Makes the network
     public abstract void makeNetwork();
-
-    // Makes network with predefined weights
-    public abstract void makeNetwork(double[] weights);
 
     // Sets the sensor values
     public abstract void set(double[] values);
@@ -57,6 +42,8 @@ public abstract class NeuralNetwork {
         return get();
     }
 
+    public abstract double getValue(int index);
+
     // Learns from answers
     public void learn(double[] correctAnswers) {
         Neuron[] terminalNeurons = layers[0];
@@ -74,5 +61,15 @@ public abstract class NeuralNetwork {
                 input.setWeight(weight + input.getInput() * learningRate * errSignal);
             }
         }
+    }
+
+    public void inputFeedback(double[] answers) {
+        double[] values = new double[inputs];
+        learningRate = 0.01;
+        set(values);
+        for(int i = 0; i != inputs; i++)
+            values[i] = (Math.random()-0.5)*0.001;
+        double accuracy;
+
     }
 }
