@@ -17,18 +17,17 @@ public abstract class Learning {
         this.network = network;
     }
 
-    public double train() {
-        double accuracy = 0.0;
+    public void train() {
+        double accuracy;
         int epoch = 0;
-        while(accuracy < accThresh && maxEpoch != epoch) {
+        do {
             accuracy = 0.0;
             for(Case currentCase : trainingCases) {
                 accuracy += getAccuracy(network.get(currentCase.inputs), currentCase.answers);
                 network.learn(currentCase.answers);
             }
-            System.out.println("accuracy: " + (accuracy /= trainingCases.length) + "   epoch: " + ++epoch);
-        }
-        return accuracy;
+            System.out.println("accuracy: " + (accuracy /= trainingCases.length) + "   epoch: " + epoch);
+        } while(accuracy < accThresh && maxEpoch != ++epoch);
     }
     public void test() {
         double accuracy = 0.0;

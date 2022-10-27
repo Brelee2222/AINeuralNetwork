@@ -117,6 +117,11 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         }
 
         @Override
+        public void setResult(double result) {
+            this.result = result;
+        }
+
+        @Override
         public void setErrSignal(double signal) {
             errorSignal = signal;
         }
@@ -160,11 +165,6 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         }
 
         @Override
-        public void setInput(double result) {
-            values[sensorIndex] = result;
-        }
-
-        @Override
         public Neuron getSource() {
             return null;
         }
@@ -198,11 +198,6 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         @Override
         public void setWeight(double weight) {
             this.weight = weight;
-        }
-
-        @Override
-        public void setInput(double result) {
-
         }
 
         @Override
@@ -242,11 +237,6 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         @Override
         public void setWeight(double weight) {
             this.weight = weight;
-        }
-
-        @Override
-        public void setInput(double result) {
-
         }
 
         @Override

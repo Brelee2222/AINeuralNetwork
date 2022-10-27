@@ -5,6 +5,5 @@ public interface NeuronInput {
     double getInput(); // returns input (should default to 1 if it is a bias)
     double getWeight(); // returns the weight
     void setWeight(double weight); // sets the weight
-    void setInput(double result); // sets a result (optional)
     Neuron getSource(); // returns the source neuron
 }

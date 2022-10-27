@@ -5,7 +5,6 @@ import io.github.catlystgit.NeuralNet.Neuron.NeuronInput;
 
 public abstract class NeuralNetwork {
     public Neuron[][] layers;
-//    public int totalLayers; layers.length
     public final int inputs;
     public final int results;
     public double randWeightRange;
@@ -16,9 +15,7 @@ public abstract class NeuralNetwork {
         this.learningRate = learningRate;
         this.randWeightRange = randWeightRange;
         results = layerSizes[0];
-        layers = new Neuron[layerSizes.length][];
-        for(int i = 0; i != layerSizes.length; i++)
-            layers[i] = new Neuron[layerSizes[i]];
+        makeNetwork(layerSizes);
     }
 
     // Makes the network
@@ -44,6 +41,8 @@ public abstract class NeuralNetwork {
 
     public abstract double getValue(int index);
 
+    public abstract void setValue(int index, double value);
+
     // Learns from answers
     public void learn(double[] correctAnswers) {
         Neuron[] terminalNeurons = layers[0];
@@ -63,13 +62,41 @@ public abstract class NeuralNetwork {
         }
     }
 
-    public void inputFeedback(double[] answers) {
+    public void inputFeedback(double[] answers, double accuracy, int maxEpoch, double randRange) {
         double[] values = new double[inputs];
-        learningRate = 0.01;
-        set(values);
-        for(int i = 0; i != inputs; i++)
-            values[i] = (Math.random()-0.5)*0.001;
-        double accuracy;
+        for(int input = 0; input != inputs; input++)
+            values[input] = (Math.random() - 0.5) * randRange * 2;
+        double[] results = get(values);
 
+        Neuron[] terminalNeurons = layers[0];
+        for(int i = 0; i != terminalNeurons.length; i++)
+            terminalNeurons[i].setErrSignal(logBase(answers[i], Math.E) - logBase(results[i], Math.E));
+
+        for(Neuron[] neurons : layers) for(Neuron neuron : neurons) {
+            double errSignal = neuron.getErrSignal();
+            for (NeuronInput input : neuron.getInputs()) {
+                Neuron from = input.getSource();
+
+                if(from != null) {
+                    double rawsult = from.getResult();
+                    from.addErrSignal(errSignal * rawsult);
+                    from.setResult(rawsult + input.getWeight() * learningRate * errSignal);
+                }
+            }
+        }
+        for(Neuron neuron : layers[layers.length-1]) {
+            double errSignal = neuron.getErrSignal();
+            for (NeuronInput input : neuron.getInputs()) {
+
+                double rawsult = Math.log(1/input.get()-1)/Math.log(Math.E);
+
+                for(int inputIndex = 0; inputIndex != neuron.getInputs().length-1; inputIndex++)
+                    setValue(inputIndex, neuron.output(rawsult + input.getWeight() * learningRate * errSignal));
+            }
+        }
+    }
+
+    public double logBase(double value, double base) {
+        return Math.log(value) / Math.log(base);
     }
 }
