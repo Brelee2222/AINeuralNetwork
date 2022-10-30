@@ -62,41 +62,68 @@ public abstract class NeuralNetwork {
         }
     }
 
-    public void inputFeedback(double[] answers, double accuracy, int maxEpoch, double randRange) {
+    public void inputFeedback(double[] answers, double accuracy, double initialValues) { // got lazy while making this
         double[] values = new double[inputs];
-        for(int input = 0; input != inputs; input++)
-            values[input] = (Math.random() - 0.5) * randRange * 2;
-        double[] results = get(values);
+        for(int i = 0; i != inputs; i++)
+            values[i] = initialValues;
+        get(values);
+        double feedbackAccuracy;
 
-        Neuron[] terminalNeurons = layers[0];
-        for(int i = 0; i != terminalNeurons.length; i++)
-            terminalNeurons[i].setErrSignal(logBase(answers[i], Math.E) - logBase(results[i], Math.E));
+        do {
+            for(Neuron[] layer : layers) for(Neuron neuron : layer)
+                neuron.setTargetResult(neuron.get());
 
-        for(Neuron[] neurons : layers) for(Neuron neuron : neurons) {
-            double errSignal = neuron.getErrSignal();
-            for (NeuronInput input : neuron.getInputs()) {
-                Neuron from = input.getSource();
+            for(int i = 0; i != layers[0].length; i++)
+                layers[0][i].setTargetResult(answers[i]);
 
-                if(from != null) {
-                    double rawsult = from.getResult();
-                    from.addErrSignal(errSignal * rawsult);
-                    from.setResult(rawsult + input.getWeight() * learningRate * errSignal);
+            for(Neuron[] layer : layers) for(Neuron neuron : layer) {
+                double weightMin = 0;
+                double weightMax = 0;
+                double weightSum = 0;
+                double rawsult = 0;
+                NeuronInput[] neuronInputs = neuron.getInputs();
+
+                for(NeuronInput neuronInput : neuronInputs) {
+                    double weight = neuronInput.getWeight();
+                    weightSum += weight;
+                    rawsult += weight * neuronInput.getTargetInput();
+                    if(weight > 0)
+                        weightMax += weight;
+                    else
+                        weightMin += weight;
+                }
+
+                double rawsultMult = logBase(neuron.getTargetResult(), Math.E)/rawsult;
+
+                for(NeuronInput neuronInput : neuronInputs) {
+                    double targetInput = neuronInput.getTargetInput();
+                    neuronInput.setTargetInput(targetInput - targetInput*(1/(1 + Math.pow(targetInput, 100*rawsultMult*neuronInput.getWeight()/(weightMax-weightMin)-1))-0.5)); // it took me several hours to make this equation
                 }
             }
-        }
-        for(Neuron neuron : layers[layers.length-1]) {
-            double errSignal = neuron.getErrSignal();
-            for (NeuronInput input : neuron.getInputs()) {
 
-                double rawsult = Math.log(1/input.get()-1)/Math.log(Math.E);
-
-                for(int inputIndex = 0; inputIndex != neuron.getInputs().length-1; inputIndex++)
-                    setValue(inputIndex, neuron.output(rawsult + input.getWeight() * learningRate * errSignal));
+            double[] results = get();
+            int index = 0;
+            int category = 0;
+            double highest = 0;
+            System.out.println("new");
+            for(double result : results) {
+                System.out.println(result);
+                if(highest < result) {
+                    highest = result;
+                    category = index;
+                }
+                index++;
             }
-        }
+            feedbackAccuracy = 1-Math.abs(answers[category] - results[category]);
+            System.out.println(feedbackAccuracy);
+        } while(feedbackAccuracy < accuracy);
     }
 
     public double logBase(double value, double base) {
         return Math.log(value) / Math.log(base);
+    }
+
+    public double clamp(double value, double min, double max) {
+        return Math.min(Math.max(min, value), max);
     }
 }

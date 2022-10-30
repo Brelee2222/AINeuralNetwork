@@ -3,8 +3,6 @@ package io.github.catlystgit.NeuralNet.utils;
 import io.github.catlystgit.NeuralNet.Neuron.Neuron;
 import io.github.catlystgit.NeuralNet.Network.NeuralNetwork;
 import io.github.catlystgit.NeuralNet.Neuron.NeuronInput;
-
-import java.io.Serializable;
 import java.util.Random;
 
 public class CatlystNeuralNetwork extends NeuralNetwork {
@@ -18,6 +16,8 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
 
     @Override
     public void makeNetwork(int[] layerSizes) {
+        random = new Random();
+
         layers = new Neuron[layerSizes.length][]; // Make layers
 
         Neuron[] prevLayer = layers[layerSizes.length-1] = new Neuron[layerSizes[layerSizes.length-1]]; // make first layer
@@ -31,7 +31,7 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
                 neuronInputs[inputIndex] = new SensorInput(inputIndex);
         }
 
-        for(int layerIndex = layerSizes.length-2; layerIndex != -1; layerIndex++) {
+        for(int layerIndex = layerSizes.length-2; layerIndex != -1; layerIndex--) {
             Neuron[] layer = layers[layerIndex] = new Neuron[layerSizes[layerIndex]];
 
             for(int neuronIndex = 0; neuronIndex != layer.length; neuronIndex++) {
@@ -65,6 +65,11 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         return values[index];
     }
 
+    @Override
+    public void setValue(int index, double value) {
+        values[index] = value;
+    }
+
     public double getRandWeight() {
         return (random.nextDouble() - 0.5) * randWeightRange * 2;
     }
@@ -74,6 +79,7 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         private double result;
         private int currentPeriod;
         private double errorSignal;
+        private double targetResult;
 
         public CatlystNeuron(NeuronInput... inputs) {
             this.inputs = inputs;
@@ -117,6 +123,16 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         }
 
         @Override
+        public double getRawErrSignal() {
+            return errorSignal;
+        }
+
+        @Override
+        public double getResult() {
+            return result;
+        }
+
+        @Override
         public void setResult(double result) {
             this.result = result;
         }
@@ -129,6 +145,21 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         @Override
         public void addErrSignal(double signal) {
             errorSignal += signal;
+        }
+
+        @Override
+        public void setTargetResult(double result) {
+            targetResult = result;
+        }
+
+        @Override
+        public double getTargetResult() {
+            return targetResult;
+        }
+
+        @Override
+        public NeuronInput getBias() {
+            return inputs[inputs.length-1];
         }
     }
     public class SensorInput implements NeuronInput {
@@ -162,6 +193,21 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         @Override
         public void setWeight(double weight) {
             this.weight = weight;
+        }
+
+        @Override
+        public void setInput(double input) {
+            values[sensorIndex] = input;
+        }
+
+        @Override
+        public void setTargetInput(double input) {
+            setInput(input);
+        }
+
+        @Override
+        public double getTargetInput() {
+            return getInput();
         }
 
         @Override
@@ -201,6 +247,21 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         }
 
         @Override
+        public void setInput(double input) {
+
+        }
+
+        @Override
+        public void setTargetInput(double input) {
+
+        }
+
+        @Override
+        public double getTargetInput() {
+            return 1;
+        }
+
+        @Override
         public Neuron getSource() {
             return null;
         }
@@ -237,6 +298,21 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         @Override
         public void setWeight(double weight) {
             this.weight = weight;
+        }
+
+        @Override
+        public void setInput(double input) {
+            source.setResult(input);
+        }
+
+        @Override
+        public void setTargetInput(double input) {
+            source.setTargetResult(input);
+        }
+
+        @Override
+        public double getTargetInput() {
+            return source.getTargetResult();
         }
 
         @Override
