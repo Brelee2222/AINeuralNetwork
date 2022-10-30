@@ -70,36 +70,7 @@ public abstract class NeuralNetwork {
         double feedbackAccuracy;
 
         do {
-            for(Neuron[] layer : layers) for(Neuron neuron : layer)
-                neuron.setTargetResult(neuron.get());
 
-            for(int i = 0; i != layers[0].length; i++)
-                layers[0][i].setTargetResult(answers[i]);
-
-            for(Neuron[] layer : layers) for(Neuron neuron : layer) {
-                double weightMin = 0;
-                double weightMax = 0;
-                double weightSum = 0;
-                double rawsult = 0;
-                NeuronInput[] neuronInputs = neuron.getInputs();
-
-                for(NeuronInput neuronInput : neuronInputs) {
-                    double weight = neuronInput.getWeight();
-                    weightSum += weight;
-                    rawsult += weight * neuronInput.getTargetInput();
-                    if(weight > 0)
-                        weightMax += weight;
-                    else
-                        weightMin += weight;
-                }
-
-                double rawsultMult = logBase(neuron.getTargetResult(), Math.E)/rawsult;
-
-                for(NeuronInput neuronInput : neuronInputs) {
-                    double targetInput = neuronInput.getTargetInput();
-                    neuronInput.setTargetInput(targetInput - targetInput*(1/(1 + Math.pow(targetInput, 100*rawsultMult*neuronInput.getWeight()/(weightMax-weightMin)-1))-0.5)); // it took me several hours to make this equation
-                }
-            }
 
             double[] results = get();
             int index = 0;
