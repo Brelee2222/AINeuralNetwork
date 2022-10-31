@@ -6,18 +6,18 @@ import io.github.catlystgit.NeuralNet.Neuron.NeuronInput;
 public class CatlystGAN extends CatlystNeuralNetwork {
     public final CatlystNeuralNetwork GAN;
 
-    public CatlystGAN(int inputs, int[] layerSizes, double randWeight, double learningRate, double randGAN) {
+    public CatlystGAN(int inputs, int[] layerSizes, double randWeight, double learningRate, int[] layerGANSizes, double randGAN, double learningRateGAN) {
         super(inputs, layerSizes, randWeight, learningRate);
-        GAN = new CatlystNeuralNetwork(inputs, layerSizes, randGAN, learningRate);
+        GAN = new CatlystNeuralNetwork(inputs, layerGANSizes, randGAN, learningRateGAN);
     }
 
     @Override
     public void learn(double[] correctAnswers) {
         double[] errSigs = learnGAN(correctAnswers);
-        Neuron[] terminalNeurons = layers[0];
+        Neuron[] terminalNeurons = GAN.layers[0];
         for(int terminalIndex = 0; terminalIndex != terminalNeurons.length; terminalIndex++)
             terminalNeurons[terminalIndex].setErrSignal(errSigs[terminalIndex]);
-        for (Neuron[] neurons : layers)
+        for (Neuron[] neurons : GAN.layers)
             for (Neuron neuron : neurons) {
                 double errSignal = neuron.getErrSignal();
                 for (NeuronInput input : neuron.getInputs()) {

@@ -123,16 +123,6 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         }
 
         @Override
-        public double getRawErrSignal() {
-            return errorSignal;
-        }
-
-        @Override
-        public double getResult() {
-            return result;
-        }
-
-        @Override
         public void setResult(double result) {
             this.result = result;
         }
@@ -201,16 +191,6 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         }
 
         @Override
-        public void setTargetInput(double input) {
-            setInput(input);
-        }
-
-        @Override
-        public double getTargetInput() {
-            return getInput();
-        }
-
-        @Override
         public Neuron getSource() {
             return null;
         }
@@ -249,16 +229,6 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         @Override
         public void setInput(double input) {
 
-        }
-
-        @Override
-        public void setTargetInput(double input) {
-
-        }
-
-        @Override
-        public double getTargetInput() {
-            return 1;
         }
 
         @Override
@@ -303,16 +273,6 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         @Override
         public void setInput(double input) {
             source.setResult(input);
-        }
-
-        @Override
-        public void setTargetInput(double input) {
-            source.setTargetResult(input);
-        }
-
-        @Override
-        public double getTargetInput() {
-            return source.getTargetResult();
         }
 
         @Override
