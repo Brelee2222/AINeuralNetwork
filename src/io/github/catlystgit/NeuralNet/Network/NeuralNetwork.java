@@ -43,7 +43,7 @@ public abstract class NeuralNetwork {
 
     public abstract void setValue(int index, double value);
 
-    // Learns from answers
+    // Learns from answers returns errorsigs
     public void learn(double[] correctAnswers) {
         Neuron[] terminalNeurons = layers[0];
         for(int i = 0; i != terminalNeurons.length; i++) {
@@ -60,41 +60,5 @@ public abstract class NeuralNetwork {
                 input.setWeight(weight + input.getInput() * learningRate * errSignal);
             }
         }
-    }
-
-    public void inputFeedback(double[] answers, double accuracy, double initialValues) { // got lazy while making this
-        double[] values = new double[inputs];
-        for(int i = 0; i != inputs; i++)
-            values[i] = initialValues;
-        get(values);
-        double feedbackAccuracy;
-
-        do {
-
-
-            double[] results = get();
-            int index = 0;
-            int category = 0;
-            double highest = 0;
-            System.out.println("new");
-            for(double result : results) {
-                System.out.println(result);
-                if(highest < result) {
-                    highest = result;
-                    category = index;
-                }
-                index++;
-            }
-            feedbackAccuracy = 1-Math.abs(answers[category] - results[category]);
-            System.out.println(feedbackAccuracy);
-        } while(feedbackAccuracy < accuracy);
-    }
-
-    public double logBase(double value, double base) {
-        return Math.log(value) / Math.log(base);
-    }
-
-    public double clamp(double value, double min, double max) {
-        return Math.min(Math.max(min, value), max);
     }
 }
