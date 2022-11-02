@@ -92,7 +92,7 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
 
         @Override
         public double output(double input) {
-            return 1 / (1 + Math.exp(input));
+            return 1 / (1 + Math.exp(-input));
         }
 
         @Override

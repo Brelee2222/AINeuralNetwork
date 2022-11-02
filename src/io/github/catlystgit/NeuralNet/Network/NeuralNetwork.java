@@ -53,10 +53,10 @@ public abstract class NeuralNetwork {
         for(Neuron[] neurons : layers) for(Neuron neuron : neurons) {
             double errSignal = neuron.getErrSignal();
             for (NeuronInput input : neuron.getInputs()) {
-                Neuron from = input.getSource();
+                Neuron source = input.getSource();
                 double weight = input.getWeight();
-                if(from != null)
-                    from.addErrSignal(errSignal * weight);
+                if(source != null)
+                    source.addErrSignal(errSignal * weight);
                 input.setWeight(weight + input.getInput() * learningRate * errSignal);
             }
         }
