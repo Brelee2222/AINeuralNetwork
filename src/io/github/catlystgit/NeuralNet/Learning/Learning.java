@@ -1,7 +1,7 @@
 package io.github.catlystgit.NeuralNet.Learning;
 
 import io.github.catlystgit.NeuralNet.Network.NeuralNetwork;
-
+// Not condoned to be used for a primary learner.
 public abstract class Learning {
     public NeuralNetwork network;
     public final int inputs;

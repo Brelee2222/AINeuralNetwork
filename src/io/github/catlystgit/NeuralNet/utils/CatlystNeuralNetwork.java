@@ -8,6 +8,7 @@ import java.util.Random;
 public class CatlystNeuralNetwork extends NeuralNetwork {
     private int period;
     private double[] values;
+    public double[] answerResults;
     public Random random;
 
     public CatlystNeuralNetwork(int inputs, int[] layerSizes, double randWeight, double learningRate) {
@@ -17,7 +18,7 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
     @Override
     public void makeNetwork(int[] layerSizes) {
         random = new Random();
-
+        answerResults = new double[results];
         layers = new Neuron[layerSizes.length][]; // Make layers
 
         Neuron[] prevLayer = layers[layerSizes.length-1] = new Neuron[layerSizes[layerSizes.length-1]]; // make first layer
@@ -57,7 +58,8 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
     @Override
     public double[] get() {
         period++;
-        return super.get();
+        update(answerResults);
+        return answerResults;
     }
 
     @Override
@@ -92,7 +94,7 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
 
         @Override
         public double output(double input) {
-            return 1 / (1 + Math.exp(-input));
+            return 1 / (1 + Math.exp(input));
         }
 
         @Override
