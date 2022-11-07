@@ -19,6 +19,7 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
     public void makeNetwork(int[] layerSizes) {
         random = new Random();
         answerResults = new double[results];
+        values = new double[inputs];
         layers = new Neuron[layerSizes.length][]; // Make layers
 
         Neuron[] prevLayer = layers[layerSizes.length-1] = new Neuron[layerSizes[layerSizes.length-1]]; // make first layer
@@ -94,7 +95,7 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
 
         @Override
         public double output(double input) {
-            return 1 / (1 + Math.exp(input));
+            return 1 / (1 + Math.exp(-input));
         }
 
         @Override
@@ -121,7 +122,7 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
 
         @Override
         public double getErrSignal() {
-            return errorSignal * result * (result - 1);
+            return errorSignal * result * (1 - result);
         }
 
         @Override

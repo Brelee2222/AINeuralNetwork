@@ -22,8 +22,10 @@ public class NetworkSaveLoad {
             dataWriter.writeInt(network.layers.length);
             for(Neuron[] layer : network.layers)
                 dataWriter.writeInt(layer.length);
-            for(Neuron[] layer : network.layers) for(Neuron neuron : layer) for(NeuronInput input : neuron.getInputs())
-                dataWriter.writeDouble(input.getWeight());
+            for(Neuron[] layer : network.layers)
+                for(Neuron neuron : layer)
+                    for(NeuronInput input : neuron.getInputs())
+                        dataWriter.writeDouble(input.getWeight());
             dataWriter.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -31,6 +33,7 @@ public class NetworkSaveLoad {
     }
 
     public static NeuralNetwork read(String path) {
+        System.out.println("reading save net");
 
         try {
             DataInputStream inpStream = new DataInputStream(new FileInputStream(path));
@@ -45,8 +48,10 @@ public class NetworkSaveLoad {
 
             CatlystNeuralNetwork nn = new CatlystNeuralNetwork(inputs, layerSizes, 0, 0.0);
 
-            for(Neuron[] layer : nn.layers) for(Neuron neuron : layer) for(NeuronInput input : neuron.getInputs())
-                input.setWeight(inpStream.readDouble());
+            for(Neuron[] layer : nn.layers)
+                for(Neuron neuron : layer)
+                    for(NeuronInput input : neuron.getInputs())
+                        input.setWeight(inpStream.readDouble());
             inpStream.close();
             return nn;
         } catch (IOException e) {
