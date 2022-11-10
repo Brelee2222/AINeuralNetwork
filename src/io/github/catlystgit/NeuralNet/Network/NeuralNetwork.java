@@ -33,9 +33,20 @@ public abstract class NeuralNetwork {
 
     //Update array instead of creating new array
     public void update(double[] results) {
-        int index = 0;
-        for(Neuron neuron : layers[0])
-            results[index++] = neuron.get();
+        for(int index = layers.length-1; index != 0; index--) {
+            for(Neuron neuron : layers[index]) {
+                neuron.update();
+            }
+        }
+
+        Neuron[] terminalLayer = layers[0];
+
+        for(int index = 0; index != results.length; index++) {
+            Neuron neuron = terminalLayer[index];
+
+            neuron.update();
+            results[index] = neuron.get();
+        }
     }
 
     // Get method with set built-in

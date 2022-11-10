@@ -17,14 +17,16 @@ public abstract class Learning {
         this.network = network;
     }
 
-    public void train() {
+    public void train(boolean learn) {
         double accuracy;
         int epoch = 0;
         do {
             accuracy = 0.0;
             for(Case currentCase : trainingCases) {
                 accuracy += getAccuracy(network.get(currentCase.inputs), currentCase.answers);
-                network.learn(currentCase.answers);
+                if(learn) {
+                    network.learn(currentCase.answers);
+                }
             }
             System.out.println("accuracy: " + (accuracy /= trainingCases.length) + "   epoch: " + epoch);
         } while(accuracy < accThresh && maxEpoch != ++epoch);

@@ -58,7 +58,7 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
 
     @Override
     public double[] get() {
-        period++;
+        period++; // Used so that a neuron doesn't compute twice when not needed
         update(answerResults);
         return answerResults;
     }
@@ -82,7 +82,6 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
         private double result;
         private int currentPeriod;
         private double errorSignal;
-        private double targetResult;
 
         public CatlystNeuron(NeuronInput... inputs) {
             this.inputs = inputs;
@@ -108,26 +107,18 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
 
         @Override
         public double get() {
-            if(currentPeriod != period) {
-                currentPeriod = period;
-                errorSignal = 0;
-                return result = getValue();
-            }
             return result;
         }
 
-        public double getValue() {
-            return output(compute());
+        @Override
+        public void update() {
+            errorSignal = 0;
+            result = output(compute());
         }
 
         @Override
         public double getErrSignal() {
             return errorSignal * result * (1 - result);
-        }
-
-        @Override
-        public void setResult(double result) {
-            this.result = result;
         }
 
         @Override
@@ -140,20 +131,6 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
             errorSignal += signal;
         }
 
-        @Override
-        public void setTargetResult(double result) {
-            targetResult = result;
-        }
-
-        @Override
-        public double getTargetResult() {
-            return targetResult;
-        }
-
-        @Override
-        public NeuronInput getBias() {
-            return inputs[inputs.length-1];
-        }
     }
     public class SensorInput implements NeuronInput {
         protected double weight;
