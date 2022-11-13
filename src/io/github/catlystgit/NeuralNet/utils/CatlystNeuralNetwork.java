@@ -6,9 +6,8 @@ import io.github.catlystgit.NeuralNet.Neuron.NeuronInput;
 import java.util.Random;
 
 public class CatlystNeuralNetwork extends NeuralNetwork {
-    private int period;
-    private double[] values;
-    public double[] answerResults;
+    public double[] values;
+    protected double[] answerResults;
     public Random random;
 
     public CatlystNeuralNetwork(int inputs, int[] layerSizes, double randWeight, double learningRate) {
@@ -58,7 +57,6 @@ public class CatlystNeuralNetwork extends NeuralNetwork {
 
     @Override
     public double[] get() {
-        period++; // Used so that a neuron doesn't compute twice when not needed
         update(answerResults);
         return answerResults;
     }
